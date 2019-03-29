@@ -37,8 +37,15 @@ def aur_package_fetch(module, name):
 
 
 def aur_package_install(module, name):
+    package_path = os.path.join(TMP_DIR, name)
+    module.run_command(["makepkg", "--syncdeps"], check_rc=True, cwd=package_path)
+    module.run_command(["makepkg", "--install"], check_rc=True, cwd=package_path)
+    module.run_command(["makepkg", "--clean"], check_rc=True, cwd=package_path)
     return 0
 
+
+def aur_package_remove(module, name):
+    return 0
 
 def main():
     module = AnsibleModule(
